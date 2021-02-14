@@ -1,0 +1,8 @@
+/esp8266/config.h
+/pic16/build
+/pic16/debug
+/pic16/disassembly
+/pic16/dist
+/pic16/nbproject/private
+/pic16/nbproject/Makefile-*.*
+/pic16/nbproject/Package-default.bash

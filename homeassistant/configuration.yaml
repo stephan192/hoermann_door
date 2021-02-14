@@ -1,0 +1,66 @@
+sensor:
+  - platform: mqtt
+    name: "Garagentor"
+    state_topic: "homeassistant/cover/state"
+    value_template: >-
+      {% if value == "open" %}
+        Offen
+      {% elif value == "closed" %}
+        Geschlossen
+      {% elif value == "venting" %}
+        Lüfterstellung
+      {% elif value == "opening" %}
+        Fährt auf
+      {% elif value == "closing" %}
+        Fährt zu
+      {% elif value == "error" %}
+        Fehler
+      {% elif value == "offline" %}
+        Offline
+      {% else %}
+        Gestoppt
+      {% endif %}
+  - platform: mqtt
+    name: "Temperatur Garage"
+    state_topic: "homeassistant/sensor/garage/value"
+    value_template: "{{ value_json.temperature_C | round(1) }}"
+    unit_of_measurement: '°C'
+  - platform: mqtt
+    name: "Feuchtigkeit Garage"
+    state_topic: "homeassistant/sensor/garage/value"
+    value_template: "{{ value_json.humidity | round(0) }}"
+    unit_of_measurement: '%'
+  - platform: mqtt
+    name: "Luftdruck Garage"
+    state_topic: "homeassistant/sensor/garage/value"
+    value_template: "{{ value_json.pressure_hPa | round(1) }}"
+    unit_of_measurement: 'hPa'
+
+cover:
+  - platform: mqtt
+    name: "Garagentor"
+    command_topic: "homeassistant/cover/set"
+    position_topic: "homeassistant/cover/state"
+    qos: 0
+    retain: false
+    payload_open: "OPEN"
+    payload_close: "CLOSE"
+    payload_stop: "STOP"
+    position_open: 100
+    position_closed: 0
+    value_template: >-
+      {% if value == "open" %}100{% elif value == "closed" %}0{% else %}10{% endif %}
+
+switch:
+  - platform: mqtt
+    name: "Lüfterstellung"
+    command_topic: "homeassistant/cover/set"
+    state_topic: "homeassistant/cover/state"
+    qos: 0
+    retain: false
+    payload_on: "VENTING"
+    payload_off: "CLOSE"
+    state_on : "ON"
+    state_off : "OFF"
+    value_template: >-
+      {% if value == "venting" %}ON{% else %}OFF{% endif %}
