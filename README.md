@@ -8,16 +8,23 @@ Inspired by https://blog.bouni.de/2018/reverse-engeneering-the-hormann-uap1-prot
 # Overview
 
 This repo contains the pcb files as well as the software to build an interface device which connects Hörmann door drives like the Supramatic E3 to Home Assistant. The interface device emulates an UAP1 to interact with the door drive. Additionally a BME280 can be connected via I2C to measure temperature, humidity and pressure.
-![pcb1](docs/pcb1.png?raw=true "pcb1") ![pcb2](docs/pcb2.png?raw=true "pcb2")
+
+<p align="center">
+    <img src="docs/pcb1.png?raw=true">
+    <img src="docs/pcb2.png?raw=true">
+</p>
 
 Home Assistant dashboard panel
-![doorpanel](docs/doorpanel.png?raw=true "doorpanel")
+
+<p align="center">
+    <img src="docs/doorpanel.png?raw=true">
+</p>
 
 # Folder structure
 
 * `board`: The Eagle schematic and board files
 * `docs`: Documentation
-* `esp8266`: Arduino project. Communication to home assistant via wifi and mqtt
+* `esp8266`: Arduino project. Communication to Home Assistant via wifi and mqtt
 * `homeassistant`: configuration snippet for Home Assistant
 * `pic16`: MPLabX project. Communication with door drive via Hörmann bus
 

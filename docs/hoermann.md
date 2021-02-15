@@ -33,7 +33,7 @@ The master sends the **Broadcast status** and the **Slave status request** messa
 | Sync break | address | counter+length | d0 | ... | dn       | crc      |
 
 * `counter` are the upper 4 bits of byte 2. The slave has to answer with `cnt+1` when he received `cnt` as counter from the master.
-* `length` are the lower 4 bits of byte 2. Length is is number of data bytes `d0`up to `dn`.
+* `length` are the lower 4 bits of byte 2. Length is the number of data bytes `d0`up to `dn`.
 
 ## CRC calculation
 * 8 bit CRC
@@ -68,7 +68,7 @@ Sender : Master
     * `4`: error active
     * `5`: direction when moving (=1 closing, =0 opening)
     * `6`: door is moving
-    * `7`: door is in venting position
+    * `7`: door is in venting position (**H** on display)
 * d1 bits:
     * `0`: ???
     * `1`: ???
@@ -130,7 +130,7 @@ Sender: Slave
     * `1`: ???
     * `2`: ???
     * `3`: ???
-    * `4`: Release by UAP1 (is this bit is set to `0` the drive stops and error 4 is shown on the display)
+    * `4`: Release by UAP1 (if this bit is set to `0` the drive stops and error **4** is shown on the display)
     * `5`: ???
     * `6`: ???
     * `7`: ???
