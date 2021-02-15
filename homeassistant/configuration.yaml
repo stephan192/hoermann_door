@@ -25,16 +25,19 @@ sensor:
     state_topic: "homeassistant/sensor/garage/value"
     value_template: "{{ value_json.temperature_C | round(1) }}"
     unit_of_measurement: '°C'
+    device_class: temperature
   - platform: mqtt
     name: "Feuchtigkeit Garage"
     state_topic: "homeassistant/sensor/garage/value"
     value_template: "{{ value_json.humidity | round(0) }}"
     unit_of_measurement: '%'
+    device_class: humidity
   - platform: mqtt
     name: "Luftdruck Garage"
     state_topic: "homeassistant/sensor/garage/value"
     value_template: "{{ value_json.pressure_hPa | round(1) }}"
     unit_of_measurement: 'hPa'
+    device_class: pressure
 
 cover:
   - platform: mqtt
