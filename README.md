@@ -31,7 +31,7 @@ Home Assistant dashboard panel
 # Thing to do first
 
 1. Get a pcb
-    * Optinally, get BME280 sensor pcb
+    * Optionally, get BME280 sensor pcb
     * Supply pcb with 24V via pins 2 & 3 of `J1`
     * Check if 5V and 3.3V are fine
 1. Get tools listed below
