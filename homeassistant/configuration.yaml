@@ -51,7 +51,7 @@ cover:
     payload_stop: "STOP"
     position_open: 100
     position_closed: 0
-    value_template: >-
+    position_template: >-
       {% if value == "open" %}100{% elif value == "closed" %}0{% else %}10{% endif %}
 
 switch:
