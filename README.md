@@ -42,6 +42,12 @@ Home Assistant dashboard panel
     * Open Boards Manager from Tools > Board menu and find `esp8266` platform.
     * Click install button.
     * Select `NodeMCU 1.0 (ESP-12E Module)` as board
+1. Add Libraries to Arduino IDE
+    * Open Sketch > Include library -> Manage libraries...
+    * Install `PubSubClient` (tested with version 2.8.0)
+    * Install `PubSubClientTools` (tested with version 0.6.0)
+    * Install `Adafruit Unified Sensor` (tested with version 1.1.4)
+    * Install `Adafruit BME280 Library` (tested with version 2.1.2)
 1. First flashing of `esp8266`
     * Get a cheap USB-UART converter (like the ones with a `CP210x`)
     * Connect the converter to `SV3` (RX, TX and GND)
@@ -49,6 +55,10 @@ Home Assistant dashboard panel
     * Power up board. If board was powered before reset `esp8266` by shorting `JP2`(Reset) for a short time
 1. Flashing `pic16`
     * Use any Microchip programmer (PICkit3, ICD3, ...)
+    * Open MPLabX and click on File -> Open Project
+    * Select `pic16` subfolder (chip icon)
+    * Click Clean an Build Main Project
+    * Click Make and Program Device Main Project
 
 # Used tools
 
