@@ -1,7 +1,7 @@
 # hoermann_door
 Control Hörmann doors drives directly via MQTT from Home Assistant
 
-Inspired by https://blog.bouni.de/2018/reverse-engeneering-the-hormann-uap1-protocoll.html
+Inspired by https://blog.bouni.de/posts/2018/hoerrmann-uap1/
 
 **USE AT YOUR OWN RISK!**
 
