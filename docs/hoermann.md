@@ -120,7 +120,7 @@ Sender: Slave
     * `0`: Trigger open door
     * `1`: Trigger close door
     * `2`: Trigger reverse direction (not 100% sure)
-    * `3`: Toogle light relais
+    * `3`: Toggle light relais
     * `4`: Trigger venting position
     * `5`: ???
     * `6`: ???

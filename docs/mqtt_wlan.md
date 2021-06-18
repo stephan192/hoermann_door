@@ -19,6 +19,6 @@ The configuration is stored in `esp8266\config.h`. If file doesn't exist copy `e
 | Define               | Description |
 |----------------------|-------------|
 | `STATE_TOPIC`        | MQTT topic to which the current state of the door is published (content type: `string`, possible values: `open`, `closed`, `venting`, `opening`, `closing`, `error`, `stopped`) |
-| `SET_TOPIC`          | Subscribed MQTT topic to retrieve commands (content type: `string`, possible values: `OPEN`, `CLOSE`, `STOP`, `VENTING`) |
+| `SET_TOPIC`          | Subscribed MQTT topic to retrieve commands (content type: `string`, possible values: `OPEN`, `CLOSE`, `STOP`, `VENTING`, `TOGGLE_LIGHT`) |
 | `BME280_VALUE_TOPIC` | MQTT topic to which the current value of the BME280 is published (content type: `JSON string`, example: `{ "temperature_C" : 8.24, "humidity" : 66.26, "pressure_hPa" : 986.41 }`) |
 | `BME280_STATE_TOPIC` | MQTT topic to which the current state of the BME280 is published (content type: `string`, possible values: `online`, `offline`) |

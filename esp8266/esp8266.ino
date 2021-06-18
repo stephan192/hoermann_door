@@ -239,4 +239,8 @@ void topic1_subscriber(String topic, String message)
   {
     door.trigger_action(hoermann_action_venting);
   }
+  if (message == "TOGGLE_LIGHT")
+  {
+    door.trigger_action(hoermann_action_toggle_light);
+  }
 }
