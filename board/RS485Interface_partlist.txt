@@ -1,0 +1,68 @@
+Partlist
+
+Exported from RS485Interface.sch at 06.07.2022 19:41:02
+
+EAGLE Version 7.2.0 Copyright (c) 1988-2014 CadSoft
+
+Assembly variant: 
+
+Part     Value             Device            Package      Library                Sheet
+
+C1       10u               C-EUC0805         C0805        rcl                    1
+C2       10n               C-EUC0805         C0805        rcl                    1
+C3       33p               C-EUC0805         C0805        rcl                    1
+C4       100n              C-EUC0805         C0805        rcl                    1
+C5       10n               C-EUC0805         C0805        rcl                    1
+C6       100n              C-EUC0805         C0805        rcl                    1
+C7       10u               C-EUC0805         C0805        rcl                    1
+C8       100n              C-EUC0805         C0805        rcl                    1
+C9       100n              C-EUC0805         C0805        rcl                    1
+C10      10u               C-EUC0805         C0805        rcl                    1
+C11      10u               C-EUC0805         C0805        rcl                    1
+C12      100n              C-EUC0805         C0805        rcl                    1
+C13      100u              UCL               UCL6.3       RS485Interface         1
+C14      100u              UCL               UCL6.3       RS485Interface         1
+C15      10u               C-EUC0805         C0805        rcl                    1
+D1       SS25              SS25              DO-214AA     RS485Interface         1
+IC1      PIC16F15324-I/SL  PIC16F15324-I/SL  SOIC14       RS485Interface         1
+IC2      AOZ1283PI         AOZ1283PI         SO8+PAD      RS485Interface         1
+IC3      MCP1826S-3302E/DB MCP1826S-3302E/DB SOT-223-3    RS485Interface         1
+IC4      ST485BDR          ST485BDR          SOIC8        RS485Interface         1
+J1       615006138421      615006138421      615006138421 InputOutputIO (rev19b) 1
+JP1                        JP1E              JP1          jumper                 1
+JP2                        JP1E              JP1          jumper                 1
+L1       SRN6045TA-220M    SRN6045TA-220M    SRN6045TA    RS485Interface         1
+R1       200k              R-EU_R0805        R0805        rcl                    1
+R2       10k               R-EU_R0805        R0805        rcl                    1
+R3       470R              R-EU_R0805        R0805        rcl                    1
+R4       20k               R-EU_R0805        R0805        rcl                    1
+R5       120R              R-EU_R0805        R0805        rcl                    1
+R6       20k               R-EU_R0805        R0805        rcl                    1
+R7       10k               R-EU_R0805        R0805        rcl                    1
+R8       10k               R-EU_R0805        R0805        rcl                    1
+R9       10k               R-EU_R0805        R0805        rcl                    1
+R10      10k               R-EU_R0805        R0805        rcl                    1
+R11      10k               R-EU_R0805        R0805        rcl                    1
+R12      10k               R-EU_R0805        R0805        rcl                    1
+R13      10k               R-EU_R0805        R0805        rcl                    1
+R14      10k               R-EU_R0805        R0805        rcl                    1
+R15      100R              R-EU_R0805        R0805        rcl                    1
+R16      100R              R-EU_R0805        R0805        rcl                    1
+R17      10k               R-EU_R0805        R0805        rcl                    1
+R18      10k               R-EU_R0805        R0805        rcl                    1
+R19      10k               R-EU_R0805        R0805        rcl                    1
+R20      10k               R-EU_R0805        R0805        rcl                    1
+R21      10k               R-EU_R0805        R0805        rcl                    1
+R22      12k               R-EU_R0805        R0805        rcl                    1
+R23      10k               R-EU_R0805        R0805        rcl                    1
+R24      68k               R-EU_R0805        R0805        rcl                    1
+R25      43k               R-EU_R0805        R0805        rcl                    1
+R26      8k2               R-EU_R0805        R0805        rcl                    1
+SV1                        MA05-1            MA05-1       con-lstb               1
+SV2                        MA04-1            MA04-1       con-lstb               1
+SV3                        MA03-1            MA03-1       con-lstb               1
+T1       BSS138            BSS138            SOT-23       RS485Interface         1
+T2       BSS138            BSS138            SOT-23       RS485Interface         1
+T3       BSS138            BSS138            SOT-23       RS485Interface         1
+T4       BSS138            BSS138            SOT-23       RS485Interface         1
+U1       ESP-12F           ESP12ESMD         ESP12E-SMD   esp8266modules         1
