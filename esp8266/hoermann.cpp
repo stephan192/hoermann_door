@@ -64,7 +64,7 @@ bool Hoermann::read_rs232(void)
       {
         if (data < 16)
         {
-          len = data + 4; //3 = SYNC + CMD + LEN + CHK, limit to 15 data bytes
+          len = data + 4; //4 = SYNC + CMD + LEN + CHK, limit to 15 data bytes
         }
         else
         {
