@@ -63,15 +63,15 @@ Sender : Master
 * d0 bits:
     * `0`: door open
     * `1`: door closed
-    * `2`: optional relay (not 100% sure)
+    * `2`: external relay supposed to be switched on (relay 03 on UAP1)
     * `3`: light relay (not 100% sure)
     * `4`: error active
     * `5`: direction when moving (=1 closing, =0 opening)
     * `6`: door is moving
     * `7`: door is in venting position (**H** on display)
 * d1 bits:
-    * `0`: ???
-    * `1`: ???
+    * `0`: pre-warning active
+    * `1`: ??? (seems to be always 1)
     * `2`: ???
     * `3`: ???
     * `4`: ???
@@ -130,7 +130,7 @@ Sender: Slave
     * `1`: ???
     * `2`: ???
     * `3`: ???
-    * `4`: Release by UAP1 (if this bit is set to `0` the drive stops and error **4** is shown on the display)
+    * `4`: State of pin `S0` on UAP1, i.e. the emergency cut-off button (normally `1`; if this bit is set to `0` the drive stops and error **4** is shown on the display)
     * `5`: ???
     * `6`: ???
     * `7`: ???
@@ -157,5 +157,5 @@ Sender: Slave
 * `0x63`: ((0x63 & 0xF0) >> 4) = 6 = counter , (0x63 & 0x0F) = 3 = length
 * `0x29`: Slave status response 
 * `0x01`: d0, trigger door open
-* `0x10`: d1, release by UAP1
+* `0x10`: d1, no emergency cut-off
 * `0x4B`: CRC
