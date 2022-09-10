@@ -20,7 +20,6 @@ mqtt:
         {% else %}
           Gestoppt
         {% endif %}
-      state_class: measurement
     - name: "Temperatur Garage"
       state_topic: "homeassistant/sensor/garage/value"
       value_template: "{{ value_json.temperature_C | round(1) }}"
