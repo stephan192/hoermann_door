@@ -1,4 +1,4 @@
-#include "config.h"
+  #include "config.h"
 #include <ESP8266WiFi.h>
 #include <ArduinoOTA.h>
 #include <PubSubClient.h>
@@ -10,6 +10,7 @@
 WiFiClient espClient;
 PubSubClient client(MQTT_SERVER, MQTT_PORT, espClient);
 PubSubClientTools mqtt(client);
+String unique_id;
 
 Hoermann door;
 hoermann_state_t current_door_state = hoermann_state_unkown;
@@ -28,6 +29,7 @@ void setup() {
   Serial.print("Connecting to WiFi: ");
   Serial.print(WIFI_SSID);
   WiFi.mode(WIFI_STA);
+  WiFi.hostname(HOSTNAME);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -39,7 +41,7 @@ void setup() {
   // ArduinoOTA.setPort(8266);
 
   // Hostname defaults to esp8266-[ChipID]
-  ArduinoOTA.setHostname(OTA_HOSTNAME);
+  ArduinoOTA.setHostname(HOSTNAME);
 
   // No authentication by default
   ArduinoOTA.setPassword(OTA_PASSWORT);
@@ -80,10 +82,17 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   // Connect to MQTT
+  byte mac[6];
+  WiFi.macAddress(mac);
+  unique_id = String(HOSTNAME) + "_" + String(mac[0], HEX) + String(mac[1], HEX) + String(mac[2], HEX) + String(mac[3], HEX) + String(mac[4], HEX) + String(mac[5], HEX);
+  unique_id.toLowerCase();
+  Serial.print("MQTT client id: ");
+  Serial.println(unique_id);
+
   Serial.print("Connecting to MQTT: ");
   Serial.print(MQTT_SERVER);
   Serial.print("...");
-  if (client.connect(MQTT_CLIENTID, MQTT_USER, MQTT_PASSWORD, STATE_TOPIC, 0, true, "offline")) {
+  if (client.connect(unique_id.c_str(), MQTT_USER, MQTT_PASSWORD, STATE_TOPIC, 0, true, "offline")) {
     Serial.println("connected");
     mqtt.subscribe(SET_TOPIC, topic1_subscriber);
   } else {
@@ -172,7 +181,7 @@ void reconnect_wifi() {
 
 void reconnect_mqtt() {
 
-  if (client.connect(MQTT_CLIENTID, MQTT_USER, MQTT_PASSWORD, STATE_TOPIC, 0, true, "offline")) {
+  if (client.connect(unique_id.c_str(), MQTT_USER, MQTT_PASSWORD, STATE_TOPIC, 0, true, "offline")) {
     mqtt.subscribe(SET_TOPIC, topic1_subscriber);
   } else {
     delay(500);
