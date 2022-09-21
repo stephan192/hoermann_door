@@ -14,10 +14,10 @@ This repo contains the pcb files as well as the software to build an interface d
     <img src="docs/pcb2.png?raw=true">
 </p>
 
-Home Assistant dashboard panel
+The door drive is automatically added to Home Assistant via [MQTT Discovery](https://www.home-assistant.io/docs/mqtt/discovery/).
 
 <p align="center">
-    <img src="docs/doorpanel.png?raw=true">
+    <img src="docs/device.png?raw=true">
 </p>
 
 # Folder structure
@@ -25,7 +25,6 @@ Home Assistant dashboard panel
 * `board`: The Eagle schematic and board files
 * `docs`: Documentation
 * `esp8266`: Arduino project. Communication to Home Assistant via wifi and mqtt
-* `homeassistant`: configuration snippet for Home Assistant
 * `pic16`: MPLabX project. Communication with door drive via Hörmann bus
 
 # Thing to do first

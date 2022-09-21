@@ -1,7 +1,6 @@
 # Configuration
 The configuration is stored in `esp8266\config.h`. If file doesn't exist copy `esp8266\config_template.h` and adopt to your needs.
 
-# Basics
 | Define          | Description |
 |-----------------|-------------|
 | `HOSTNAME`      | Hostname used for WIFI, OTA and MQTT |
@@ -13,11 +12,3 @@ The configuration is stored in `esp8266\config.h`. If file doesn't exist copy `e
 | `MQTT_PASSWORD` | Password used to connect to the MQTT server |
 | `OTA_PASSWORT`  | Password used for over the air updates from Arduino IDE |
 | `BME280_I2C_ADR`| I2C address of the BME280 |
-
-# MQTT
-| Define               | Description |
-|----------------------|-------------|
-| `STATE_TOPIC`        | MQTT topic to which the current state of the door is published (content type: `string`, possible values: `open`, `closed`, `venting`, `opening`, `closing`, `error`, `stopped`) |
-| `SET_TOPIC`          | Subscribed MQTT topic to retrieve commands (content type: `string`, possible values: `OPEN`, `CLOSE`, `STOP`, `VENTING`, `TOGGLE_LIGHT`) |
-| `BME280_VALUE_TOPIC` | MQTT topic to which the current value of the BME280 is published (content type: `JSON string`, example: `{ "temperature_C" : 8.24, "humidity" : 66.26, "pressure_hPa" : 986.41 }`) |
-| `BME280_STATE_TOPIC` | MQTT topic to which the current state of the BME280 is published (content type: `string`, possible values: `online`, `offline`) |

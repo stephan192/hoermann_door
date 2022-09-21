@@ -5,14 +5,22 @@
 
 typedef enum
 {
-  hoermann_state_stopped = 0,
-  hoermann_state_open,
-  hoermann_state_closed,
-  hoermann_state_venting,
-  hoermann_state_opening,
-  hoermann_state_closing,
-  hoermann_state_error,
-  hoermann_state_unkown
+  cover_stopped = 0,
+  cover_open,
+  cover_closed,
+  cover_opening,
+  cover_closing
+} cover_state_t;
+
+typedef struct
+{
+  cover_state_t cover;
+  bool venting;
+  bool error;
+  bool prewarn;
+  bool light;
+  bool option_relay;
+  bool data_valid;
 } hoermann_state_t;
 
 typedef enum
@@ -31,11 +39,9 @@ class Hoermann
     Hoermann();
     void loop();
     hoermann_state_t get_state();
-    String get_state_string();
     void trigger_action(hoermann_action_t action);
   private:
     hoermann_state_t actual_state;
-    String actual_state_string;
     hoermann_action_t actual_action;
     uint8_t rx_buffer[19];
     uint8_t output_buffer[19];

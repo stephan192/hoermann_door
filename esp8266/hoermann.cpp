@@ -5,9 +5,7 @@
 
 Hoermann::Hoermann(void)
 {
-  actual_state = hoermann_state_unkown;
-  actual_state_string = "unkown";
-  actual_action = hoermann_action_none;
+  actual_state.data_valid = false;
 }
 
 void Hoermann::loop(void)
@@ -27,11 +25,6 @@ void Hoermann::loop(void)
 hoermann_state_t Hoermann::get_state(void)
 {
   return actual_state;
-}
-
-String Hoermann::get_state_string(void)
-{
-  return actual_state_string;
 }
 
 void Hoermann::trigger_action(hoermann_action_t action)
@@ -92,41 +85,80 @@ void Hoermann::parse_input(void)
   {
     if (rx_buffer[2] == 0x02)
     {
+      /* Determine cover state */
       if ((rx_buffer[3] & 0x01) == 0x01)
       {
-        actual_state = hoermann_state_open;
-        actual_state_string = "open";
+        actual_state.cover = cover_open;
       }
       else if ((rx_buffer[3] & 0x02) == 0x02)
       {
-        actual_state = hoermann_state_closed;
-        actual_state_string = "closed";
-      }
-      else if ((rx_buffer[3] & 0x80) == 0x80)
-      {
-        actual_state = hoermann_state_venting;
-        actual_state_string = "venting";
+        actual_state.cover = cover_closed;
       }
       else if ((rx_buffer[3] & 0x60) == 0x40)
       {
-        actual_state = hoermann_state_opening;
-        actual_state_string = "opening";
+        actual_state.cover = cover_opening;
       }
       else if ((rx_buffer[3] & 0x60) == 0x60)
       {
-        actual_state = hoermann_state_closing;
-        actual_state_string = "closing";
-      }
-      else if ((rx_buffer[3] & 0x10) == 0x10)
-      {
-        actual_state = hoermann_state_error;
-        actual_state_string = "error";
+        actual_state.cover = cover_closing;
       }
       else
       {
-        actual_state = hoermann_state_stopped;
-        actual_state_string = "stopped";
+        actual_state.cover = cover_stopped;
       }
+
+      /* Determine option relay state */
+      if ((rx_buffer[3] & 0x04) == 0x04)
+      {
+        actual_state.option_relay = true;
+      }
+      else
+      {
+        actual_state.option_relay = false;
+      }
+
+      /* Determine light state */
+      if ((rx_buffer[3] & 0x08) == 0x08)
+      {
+        actual_state.light = true;
+      }
+      else
+      {
+        actual_state.light = false;
+      }
+
+      /* Determine error state */
+      if ((rx_buffer[3] & 0x10) == 0x10)
+      {
+        actual_state.error = true;
+      }
+      else
+      {
+        actual_state.error = false;
+      }
+
+      /* Determine venting state */
+      if ((rx_buffer[3] & 0x80) == 0x80)
+      {
+        actual_state.venting = true;
+      }
+      else
+      {
+        actual_state.venting = false;
+      }
+
+      /* Determine prewarn state */
+      if ((rx_buffer[4] & 0x01) == 0x01)
+      {
+        actual_state.prewarn = true;
+      }
+      else
+      {
+        actual_state.prewarn = false;
+      }
+
+      /* Finally mark data as valid */
+      actual_state.data_valid = true;
     }
   }
 }
