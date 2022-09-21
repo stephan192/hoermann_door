@@ -123,7 +123,7 @@ void setup() {
   bme_detected = bme.begin(BME280_I2C_ADR);
   if (bme_detected)
   {
-    mqtt.publish(bme_avty_topic, "online", false);
+    mqtt.publish(bme_avty_topic, "online", true);
     Serial.println("BME connected!");
   }
   else
@@ -239,7 +239,7 @@ void connect_bme(void)
     bme_detected = bme.begin(BME280_I2C_ADR);
     if (bme_detected)
     {
-      mqtt.publish(bme_avty_topic, "online", false);
+      mqtt.publish(bme_avty_topic, "online", true);
     }
   }
 }
@@ -368,6 +368,14 @@ void mqtt_init_publish_and_subscribe() {
   mqtt.subscribe(light_cmd_topic, light_cmd_subscriber);
 
   mqtt.publish(cover_avty_topic, "online", true);
+  if (bme_detected)
+  {
+    mqtt.publish(bme_avty_topic, "online", true);
+  }
+  else
+  {
+    mqtt.publish(bme_avty_topic, "offline", true);
+  }
 }
 
 void publish_mqtt_autodiscovery() {
