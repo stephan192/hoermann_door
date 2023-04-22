@@ -39,7 +39,7 @@ The master sends the **Broadcast status** and the **Slave status request** messa
 * 8 bit CRC
 * Polynomial: `0x07`
 * Initial value: `0xF3`
-* The CRC is calculated over all bytes starting with the address bytes and ending with the last data byte
+* The CRC is calculated over all bytes starting with the address byte and ending with the last data byte
 
 ## Known addresses
 * `0x00`: Broadcast
