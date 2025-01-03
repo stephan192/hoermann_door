@@ -30,6 +30,8 @@ typedef enum
   hoermann_action_close,
   hoermann_action_venting,
   hoermann_action_toggle_light,
+  hoermann_action_emergency_stop,
+  hoermann_action_impulse,
   hoermann_action_none
 } hoermann_action_t;
 

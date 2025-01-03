@@ -18,11 +18,12 @@
 #define CMD_SLAVE_STATUS_RESPONSE 0x29
 
 #define RESPONSE_DEFAULT          0x1000
-#define RESPONSE_STOP             0x0000
+#define RESPONSE_EMERGENCY_STOP   0x0000
 #define RESPONSE_OPEN             0x1001
 #define RESPONSE_CLOSE            0x1002
 #define RESPONSE_VENTING          0x1010
 #define RESPONSE_TOGGLE_LIGHT     0x1008
+#define RESPONSE_IMPULSE          0x1004
 
 #define CRC8_INITIAL_VALUE        0xF3
 /* CRC table for polynomial 0x07 */
@@ -252,7 +253,11 @@ void hoermann_trigger_action(hoermann_action_t action)
   {
     case hoermann_action_stop:
     {
-      slave_respone_data = RESPONSE_STOP;
+      /* Motor needs only to be stopped if it is running */
+      if (((broadcast_status & 0x60) == 0x40) || ((broadcast_status & 0x60) == 0x60))
+      {
+        slave_respone_data = RESPONSE_IMPULSE;
+      }
       break;
     }
     case hoermann_action_open:
@@ -273,6 +278,16 @@ void hoermann_trigger_action(hoermann_action_t action)
     case hoermann_action_toggle_light:
     {
       slave_respone_data = RESPONSE_TOGGLE_LIGHT;
+      break;
+    }
+    case hoermann_action_emergency_stop:
+    {
+      slave_respone_data = RESPONSE_EMERGENCY_STOP;
+      break;
+    }
+    case hoermann_action_impulse:
+    {
+      slave_respone_data = RESPONSE_IMPULSE;
       break;
     }
   }

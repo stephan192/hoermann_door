@@ -8,7 +8,7 @@
 #include "hoermann.h"
 
 #define HW_VERSION "v1"
-#define SW_VERSION "v2"
+#define SW_VERSION "v3"
 
 WiFiClient espClient;
 PubSubClient client(MQTT_SERVER, MQTT_PORT, espClient);
@@ -34,6 +34,8 @@ String light_state_topic;
 String error_state_topic;
 String prewarn_state_topic;
 String option_relay_state_topic;
+String emergency_stop_cmd_topic;
+String impulse_cmd_topic;
 String bme_avty_topic;
 String bme_state_topic;
 
@@ -358,6 +360,9 @@ void setup_mqtt_topics() {
   prewarn_state_topic = "homeassistant/binary_sensor/" + unique_id + "_prewarn/state";
   option_relay_state_topic = "homeassistant/binary_sensor/" + unique_id + "_option_relay/state";
 
+  emergency_stop_cmd_topic = "homeassistant/button/" + unique_id + "_emergency_stop/trigger";
+  impulse_cmd_topic = "homeassistant/button/" + unique_id + "_impulse/trigger";
+
   bme_avty_topic = "homeassistant/sensor/" + unique_id + "_bme/availability";
   bme_state_topic = "homeassistant/sensor/" + unique_id + "_bme/state";
 }
@@ -366,6 +371,8 @@ void mqtt_init_publish_and_subscribe() {
   mqtt.subscribe(cover_cmd_topic, cover_cmd_subscriber);
   mqtt.subscribe(venting_cmd_topic, venting_cmd_subscriber);
   mqtt.subscribe(light_cmd_topic, light_cmd_subscriber);
+  mqtt.subscribe(emergency_stop_cmd_topic, emergency_stop_cmd_subscriber);
+  mqtt.subscribe(impulse_cmd_topic, impulse_cmd_subscriber);
 
   mqtt.publish(cover_avty_topic, "online", true);
   if (bme_detected)
@@ -387,39 +394,47 @@ void publish_mqtt_autodiscovery() {
   obj_id.toLowerCase();
 
   topic = "homeassistant/cover/" + unique_id + "_cover/config";
-  payload = "{\"~\":\"homeassistant/cover/" + unique_id + "_cover\", \"avty_t\":\"~/availability\", \"cmd_t\":\"~/command\", " + device + ", \"dev_cla\":\"garage\", \"name\":\"Garage door\", \"obj_id\":\"" + obj_id + "_cover\", \"pos_t\":\"~/position\", \"uniq_id\":\"" + unique_id + "_cover\"}";
+  payload = "{\"~\":\"homeassistant/cover/" + unique_id + "_cover\", \"avty_t\":\"~/availability\", \"cmd_t\":\"~/command\", " + device + ", \"dev_cla\":\"garage\", \"name\":\"Garage door\", \"obj_id\":\"" + obj_id + "_cover\", \"pos_t\":\"~/position\", \"uniq_id\":\"" + unique_id + "_cover\", \"en\":\"true\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/switch/" + unique_id + "_venting/config";
-  payload = "{\"~\":\"homeassistant/switch/" + unique_id + "_venting\", \"avty_t\":\"" + cover_avty_topic + "\", \"cmd_t\":\"~/command\", " + device + ", \"icon\":\"mdi:hvac\", \"name\":\"Venting\", \"obj_id\":\"" + obj_id + "_venting\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_venting\"}";
+  payload = "{\"~\":\"homeassistant/switch/" + unique_id + "_venting\", \"avty_t\":\"" + cover_avty_topic + "\", \"cmd_t\":\"~/command\", " + device + ", \"icon\":\"mdi:fan\", \"name\":\"Venting\", \"obj_id\":\"" + obj_id + "_venting\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_venting\", \"en\":\"true\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/switch/" + unique_id + "_light/config";
-  payload = "{\"~\":\"homeassistant/switch/" + unique_id + "_light\", \"avty_t\":\"" + cover_avty_topic + "\", \"cmd_t\":\"~/command\", " + device + ", \"icon\":\"mdi:lightbulb\", \"name\":\"Light\", \"obj_id\":\"" + obj_id + "_light\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_light\"}";
+  payload = "{\"~\":\"homeassistant/switch/" + unique_id + "_light\", \"avty_t\":\"" + cover_avty_topic + "\", \"cmd_t\":\"~/command\", " + device + ", \"icon\":\"mdi:lightbulb\", \"name\":\"Light\", \"obj_id\":\"" + obj_id + "_light\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_light\", \"en\":\"false\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/binary_sensor/" + unique_id + "_error/config";
-  payload = "{\"~\":\"homeassistant/binary_sensor/" + unique_id + "_error\", \"avty_t\":\"" + cover_avty_topic + "\", " + device + ", \"dev_cla\":\"problem\", \"name\":\"Error\", \"obj_id\":\"" + obj_id + "_error\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_error\"}";
+  payload = "{\"~\":\"homeassistant/binary_sensor/" + unique_id + "_error\", \"avty_t\":\"" + cover_avty_topic + "\", " + device + ", \"dev_cla\":\"problem\", \"name\":\"Error\", \"obj_id\":\"" + obj_id + "_error\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_error\", \"en\":\"true\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/binary_sensor/" + unique_id + "_prewarn/config";
-  payload = "{\"~\":\"homeassistant/binary_sensor/" + unique_id + "_prewarn\", \"avty_t\":\"" + cover_avty_topic + "\", " + device + ", \"dev_cla\":\"safety\", \"name\":\"Prewarn\", \"obj_id\":\"" + obj_id + "_prewarn\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_prewarn\"}";
+  payload = "{\"~\":\"homeassistant/binary_sensor/" + unique_id + "_prewarn\", \"avty_t\":\"" + cover_avty_topic + "\", " + device + ", \"dev_cla\":\"safety\", \"name\":\"Prewarn\", \"obj_id\":\"" + obj_id + "_prewarn\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_prewarn\", \"en\":\"false\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/binary_sensor/" + unique_id + "_option_relay/config";
-  payload = "{\"~\":\"homeassistant/binary_sensor/" + unique_id + "_option_relay\", \"avty_t\":\"" + cover_avty_topic + "\", " + device + ", \"name\":\"Option relay\", \"obj_id\":\"" + obj_id + "_option_relay\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_option_relay\"}";
+  payload = "{\"~\":\"homeassistant/binary_sensor/" + unique_id + "_option_relay\", \"avty_t\":\"" + cover_avty_topic + "\", " + device + ", \"name\":\"Option relay\", \"obj_id\":\"" + obj_id + "_option_relay\", \"stat_t\":\"~/state\", \"uniq_id\":\"" + unique_id + "_option_relay\", \"en\":\"false\"}";
+  publish_oversize_payload(topic, payload, true);
+
+  topic = "homeassistant/button/" + unique_id + "_emergency_stop/config";
+  payload = "{\"~\":\"homeassistant/button/" + unique_id + "_emergency_stop\", \"avty_t\":\"" + cover_avty_topic + "\", \"cmd_t\":\"homeassistant/button/" + unique_id + "_emergency_stop/trigger\", " + device + ", \"icon\":\"mdi:close-octagon\", \"name\":\"Emergency stop\", \"obj_id\":\"" + obj_id + "_emergency_stop\", \"uniq_id\":\"" + unique_id + "_emergency_stop\", \"en\":\"false\"}";
+  publish_oversize_payload(topic, payload, true);
+
+  topic = "homeassistant/button/" + unique_id + "_impulse/config";
+  payload = "{\"~\":\"homeassistant/button/" + unique_id + "_impulse\", \"avty_t\":\"" + cover_avty_topic + "\", \"cmd_t\":\"homeassistant/button/" + unique_id + "_impulse/trigger\", " + device + ", \"icon\":\"mdi:arrow-up-down\", \"name\":\"Impulse\", \"obj_id\":\"" + obj_id + "_impulse\", \"uniq_id\":\"" + unique_id + "_impulse\", \"en\":\"false\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/sensor/" + unique_id + "_temperature/config";
-  payload = "{\"avty\":[{\"topic\":\"" + cover_avty_topic + "\"}, {\"topic\":\"" + bme_avty_topic + "\"}], \"avty_mode\":\"all\", " + device + ", \"dev_cla\":\"temperature\", \"name\":\"Temperature\", \"obj_id\":\"" + obj_id + "_temperature\", \"stat_cla\":\"measurement\", \"stat_t\":\"" + bme_state_topic + "\", \"uniq_id\":\"" + unique_id + "_temperature\", \"unit_of_meas\":\"\u00b0C\", \"val_tpl\":\"{{value_json.temperature_C|round(1)}}\"}";
+  payload = "{\"avty\":[{\"topic\":\"" + cover_avty_topic + "\"}, {\"topic\":\"" + bme_avty_topic + "\"}], \"avty_mode\":\"all\", " + device + ", \"dev_cla\":\"temperature\", \"name\":\"Temperature\", \"obj_id\":\"" + obj_id + "_temperature\", \"stat_cla\":\"measurement\", \"stat_t\":\"" + bme_state_topic + "\", \"uniq_id\":\"" + unique_id + "_temperature\", \"unit_of_meas\":\"\u00b0C\", \"val_tpl\":\"{{value_json.temperature_C|round(1)}}\", \"en\":\"true\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/sensor/" + unique_id + "_humidity/config";
-  payload = "{\"avty\":[{\"topic\":\"" + cover_avty_topic + "\"}, {\"topic\":\"" + bme_avty_topic + "\"}], \"avty_mode\":\"all\", " + device + ", \"dev_cla\":\"humidity\", \"name\":\"Humidity\", \"obj_id\":\"" + obj_id + "_humidity\", \"stat_cla\":\"measurement\", \"stat_t\":\"" + bme_state_topic + "\", \"uniq_id\":\"" + unique_id + "_humidity\", \"unit_of_meas\":\"%\", \"val_tpl\":\"{{value_json.humidity|round(0)}}\"}";
+  payload = "{\"avty\":[{\"topic\":\"" + cover_avty_topic + "\"}, {\"topic\":\"" + bme_avty_topic + "\"}], \"avty_mode\":\"all\", " + device + ", \"dev_cla\":\"humidity\", \"name\":\"Humidity\", \"obj_id\":\"" + obj_id + "_humidity\", \"stat_cla\":\"measurement\", \"stat_t\":\"" + bme_state_topic + "\", \"uniq_id\":\"" + unique_id + "_humidity\", \"unit_of_meas\":\"%\", \"val_tpl\":\"{{value_json.humidity|round(0)}}\", \"en\":\"true\"}";
   publish_oversize_payload(topic, payload, true);
 
   topic = "homeassistant/sensor/" + unique_id + "_pressure/config";
-  payload = "{\"avty\":[{\"topic\":\"" + cover_avty_topic + "\"}, {\"topic\":\"" + bme_avty_topic + "\"}], \"avty_mode\":\"all\", " + device + ", \"dev_cla\":\"pressure\", \"name\":\"Pressure\", \"obj_id\":\"" + obj_id + "_pressure\", \"stat_cla\":\"measurement\", \"stat_t\":\"" + bme_state_topic + "\", \"uniq_id\":\"" + unique_id + "_pressure\", \"unit_of_meas\":\"hPa\", \"val_tpl\":\"{{value_json.pressure_hPa|round(1)}}\"}";
+  payload = "{\"avty\":[{\"topic\":\"" + cover_avty_topic + "\"}, {\"topic\":\"" + bme_avty_topic + "\"}], \"avty_mode\":\"all\", " + device + ", \"dev_cla\":\"pressure\", \"name\":\"Pressure\", \"obj_id\":\"" + obj_id + "_pressure\", \"stat_cla\":\"measurement\", \"stat_t\":\"" + bme_state_topic + "\", \"uniq_id\":\"" + unique_id + "_pressure\", \"unit_of_meas\":\"hPa\", \"val_tpl\":\"{{value_json.pressure_hPa|round(1)}}\", \"en\":\"true\"}";
   publish_oversize_payload(topic, payload, true);
 
   Serial.println("MQTT autodiscovery sent");
@@ -478,5 +493,21 @@ void light_cmd_subscriber(String topic, String message)
   if ((message == "ON") || (message == "OFF"))
   {
     door.trigger_action(hoermann_action_toggle_light);
+  }
+}
+
+void emergency_stop_cmd_subscriber(String topic, String message)
+{
+  if (message == "PRESS")
+  {
+    door.trigger_action(hoermann_action_emergency_stop);
+  }
+}
+
+void impulse_cmd_subscriber(String topic, String message)
+{
+  if (message == "PRESS")
+  {
+    door.trigger_action(hoermann_action_impulse);
   }
 }

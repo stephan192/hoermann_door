@@ -70,8 +70,9 @@ The door drive is automatically added to Home Assistant via [MQTT Discovery](htt
 * USB-UART converter
 
 ## PIC16
-* MPLabX v5.25
-* XC8 v2.10
+* MPLabX v5.45
+* Device Family Pack PIC16F1xxxx_DFP 1.5.133
+* XC8 v2.32
 * PICkit3
 
 

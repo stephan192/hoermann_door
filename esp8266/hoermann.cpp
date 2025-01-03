@@ -6,6 +6,7 @@
 Hoermann::Hoermann(void)
 {
   actual_state.data_valid = false;
+  actual_action = hoermann_action_none;
 }
 
 void Hoermann::loop(void)

@@ -63,8 +63,8 @@ Sender : Master
 * d0 bits:
     * `0`: door open
     * `1`: door closed
-    * `2`: external relay supposed to be switched on (relay 03 on UAP1)
-    * `3`: light relay (not 100% sure)
+    * `2`: optional/external relay (relay 03 on UAP1)
+    * `3`: light relay
     * `4`: error active
     * `5`: direction when moving (=1 closing, =0 opening)
     * `6`: door is moving
@@ -119,7 +119,7 @@ Sender: Slave
 * d0 bits:
     * `0`: Trigger open door
     * `1`: Trigger close door
-    * `2`: Trigger reverse direction (not 100% sure)
+    * `2`: Trigger impulse (stop if door is moving, reverse direction if stopped, behaviour like the button on the remote control)
     * `3`: Toggle light relais
     * `4`: Trigger venting position
     * `5`: ???

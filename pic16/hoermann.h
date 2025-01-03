@@ -4,7 +4,9 @@ typedef enum
   hoermann_action_open = 1,
   hoermann_action_close = 2,
   hoermann_action_venting = 3,
-  hoermann_action_toggle_light = 4
+  hoermann_action_toggle_light = 4,
+  hoermann_action_emergency_stop = 5,
+  hoermann_action_impulse = 6
 } hoermann_action_t;
 
 extern void hoermann_init(void);
