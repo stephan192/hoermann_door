@@ -101,6 +101,17 @@ void setup() {
   Serial.print("OTA ready - IP address: ");
   Serial.println(WiFi.localIP());
 
+  // Connect BME sensor
+  bme_detected = bme.begin(BME280_I2C_ADR);
+  if (bme_detected)
+  {
+    Serial.println("BME connected!");
+  }
+  else
+  {
+    Serial.println("BME not found!");
+  }
+
   // Connect to MQTT
   byte mac[6];
   WiFi.macAddress(mac);
@@ -122,18 +133,7 @@ void setup() {
     Serial.println(client.state());
   }
 
-  bme_detected = bme.begin(BME280_I2C_ADR);
-  if (bme_detected)
-  {
-    mqtt.publish(bme_avty_topic, "online", true);
-    Serial.println("BME connected!");
-  }
-  else
-  {
-    mqtt.publish(bme_avty_topic, "offline", true);
-    Serial.println("BME not found!");
-  }
-
+  // Configure serial interface for door communication
   Serial.flush();
   Serial.end();
   Serial.begin(19200);
