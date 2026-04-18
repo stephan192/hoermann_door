@@ -8,7 +8,7 @@
 #include "hoermann.h"
 
 #define HW_VERSION "v1"
-#define SW_VERSION "v3.1"
+#define SW_VERSION "v3.2"
 
 WiFiClient espClient;
 PubSubClient client(MQTT_SERVER, MQTT_PORT, espClient);
@@ -113,7 +113,7 @@ void setup() {
   Serial.print("Connecting to MQTT: ");
   Serial.print(MQTT_SERVER);
   Serial.print("...");
-  if (client.connect(unique_id.c_str(), MQTT_USER, MQTT_PASSWORD, cover_avty_topic.c_str(), 0, true, "offline")) {
+  if (connect_mqtt()) {
     Serial.println("connected");
     publish_mqtt_autodiscovery();
     mqtt_init_publish_and_subscribe();
@@ -197,10 +197,25 @@ void reconnect_wifi() {
 
 void reconnect_mqtt() {
 
-  if (client.connect(unique_id.c_str(), MQTT_USER, MQTT_PASSWORD, cover_avty_topic.c_str(), 0, true, "offline")) {
+  if (connect_mqtt()) {
     mqtt_init_publish_and_subscribe();
   } else {
     delay(500);
+  }
+}
+
+bool connect_mqtt() {
+  if (client.connect(unique_id.c_str(), MQTT_USER, MQTT_PASSWORD, cover_avty_topic.c_str(), 0, true, "offline")) {
+    // Run loop a few times before proceeding
+    for (int i = 0; i < 50; i++) {
+      client.loop();
+      delay(10);
+    }
+    return client.connected();
+  }
+  else
+  {
+    return false;
   }
 }
 
